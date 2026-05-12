@@ -29,14 +29,12 @@
 </head>
 <body>
     <div class="container" id="app">
-        <!-- экран входа -->
         <div id="loginScreen" class="login-box">
             <h2 style="text-align:center;">Вход для администратора</h2>
             <input type="text" id="adminLogin" placeholder="Логин" value="admin">
             <input type="password" id="adminPass" placeholder="Пароль" value="admin123">
             <button class="login-btn" onclick="loginAdmin()">Войти</button>
         </div>
-        <!-- панель -->
         <div id="adminPanel" style="display:none;">
             <button class="logout-btn" onclick="logoutAdmin()">Выйти</button>
             <h1>Заказы</h1>
@@ -117,22 +115,21 @@
             changeStatus(orderId, 'code_requested', { code });
         }
 
-        // Проверка, вдруг уже залогинен (по sessionStorage флагу)
+        // Автовход
         if (sessionStorage.getItem('admin_logged') === 'true') {
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('adminPanel').style.display = 'block';
             renderOrders();
         }
-        window.loginAdmin = loginAdmin;
+        window.loginAdmin = function() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            sessionStorage.setItem('admin_logged', 'true');
+            renderOrders();
+        };
         window.logoutAdmin = function() {
             sessionStorage.removeItem('admin_logged');
             logoutAdmin();
-        };
-        // При входе ставим флаг
-        const origLogin = loginAdmin;
-        loginAdmin = function() {
-            origLogin();
-            sessionStorage.setItem('admin_logged', 'true');
         };
     </script>
 </body>
