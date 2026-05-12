@@ -33,10 +33,10 @@
             <h2 style="text-align:center;">Вход для администратора</h2>
             <input type="text" id="adminLogin" placeholder="Логин" value="admin">
             <input type="password" id="adminPass" placeholder="Пароль" value="admin123">
-            <button class="login-btn" onclick="loginAdmin()">Войти</button>
+            <button class="login-btn" id="loginBtn">Войти</button>
         </div>
         <div id="adminPanel" style="display:none;">
-            <button class="logout-btn" onclick="logoutAdmin()">Выйти</button>
+            <button class="logout-btn" id="logoutBtn">Выйти</button>
             <h1>Заказы</h1>
             <div class="order-list" id="orderList"></div>
         </div>
@@ -55,15 +55,17 @@
             if (login === ADMIN_CRED.login && pass === ADMIN_CRED.password) {
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('adminPanel').style.display = 'block';
+                sessionStorage.setItem('admin_logged', 'true');
                 renderOrders();
             } else {
-                alert('Неверные данные');
+                alert('Неверные логин или пароль');
             }
         }
 
         function logoutAdmin() {
             document.getElementById('loginScreen').style.display = 'block';
             document.getElementById('adminPanel').style.display = 'none';
+            sessionStorage.removeItem('admin_logged');
         }
 
         function changeStatus(orderId, newStatus, extra = {}) {
@@ -74,6 +76,11 @@
             order.status = newStatus;
             saveOrders(orders);
             renderOrders();
+        }
+
+        function generateCode(orderId) {
+            const code = Math.random().toString(36).substring(2, 8).toUpperCase();
+            changeStatus(orderId, 'code_requested', { code });
         }
 
         function renderOrders() {
@@ -110,27 +117,15 @@
             });
         }
 
-        function generateCode(orderId) {
-            const code = Math.random().toString(36).substring(2, 8).toUpperCase();
-            changeStatus(orderId, 'code_requested', { code });
-        }
+        document.getElementById('loginBtn').addEventListener('click', loginAdmin);
+        document.getElementById('logoutBtn').addEventListener('click', logoutAdmin);
 
-        // Автовход
+        // Проверка сессии при загрузке
         if (sessionStorage.getItem('admin_logged') === 'true') {
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('adminPanel').style.display = 'block';
             renderOrders();
         }
-        window.loginAdmin = function() {
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('adminPanel').style.display = 'block';
-            sessionStorage.setItem('admin_logged', 'true');
-            renderOrders();
-        };
-        window.logoutAdmin = function() {
-            sessionStorage.removeItem('admin_logged');
-            logoutAdmin();
-        };
     </script>
 </body>
 </html>
