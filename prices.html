@@ -7,14 +7,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Общие стили + специфичные для страницы */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: #0A0A0A; color: #FFFFFF; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0A0A0A;
+            color: #FFFFFF;
+            overflow-x: hidden;
+        }
         .container { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
         header {
             position: sticky; top: 0; z-index: 100;
             background: rgba(10,10,10,0.85); backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(0,255,133,0.15); padding: 18px 0; transition: 0.3s;
+            border-bottom: 1px solid rgba(0,255,133,0.15);
+            padding: 18px 0; transition: 0.3s;
         }
         header.scrolled { box-shadow: 0 0 20px rgba(0,255,133,0.3); }
         .header-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
@@ -60,13 +65,47 @@
         .order-btn { background: #00FF85; color: #0A0A0A; border: none; padding: 14px 32px; border-radius: 40px; font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: 0.2s; }
         .order-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        .modal { /* модалка входа */ }
-        /* ... (все стили модалки) */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(6px); justify-content: center; align-items: center; z-index: 1000; }
+        .modal.active { display: flex; }
+        .modal-content { background: rgba(20,20,20,0.95); backdrop-filter: blur(12px); border: 1px solid rgba(0,255,133,0.3); border-radius: 32px; padding: 32px; max-width: 400px; width: 90%; position: relative; }
+        .modal-close { position: absolute; top: 16px; right: 20px; background: none; border: none; color: #aaa; font-size: 1.5rem; cursor: pointer; }
+        .modal-tabs { display: flex; margin-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .modal-tab { flex: 1; text-align: center; padding: 12px; cursor: pointer; font-weight: 500; color: #aaa; transition: 0.2s; border-bottom: 2px solid transparent; }
+        .modal-tab.active { color: #00FF85; border-bottom-color: #00FF85; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; margin-bottom: 6px; font-size: 0.85rem; color: #ccc; }
+        .form-group input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 12px; color: white; }
+        .form-group input:focus { outline: none; border-color: #00FF85; }
+        .error-msg { color: #FF4D6A; font-size: 0.8rem; margin-top: 4px; display: none; }
+        .submit-btn { background: #00FF85; border: none; width: 100%; padding: 12px; border-radius: 40px; font-weight: 700; color: #0A0A0A; cursor: pointer; }
+
+        footer { padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; color: #888; margin-top: 80px; }
+        footer .social-links a { color: #aaa; margin: 0 10px; font-size: 1.2rem; }
+        footer .social-links a:hover { color: #00FF85; }
+
+        @media (max-width: 768px) { .packages { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
     <header id="header">
-        <!-- дублируется из index.html -->
+        <div class="container header-inner">
+            <div class="logo">
+                <div class="logo-icon"><i class="fas fa-futbol"></i></div>
+                <div class="logo-text">GOLAZO<span>FC</span></div>
+            </div>
+            <nav>
+                <a href="index.html">Главная</a>
+                <a href="prices.html" class="active">Цены</a>
+                <a href="how.html">Как работает</a>
+                <a href="reviews.html">Отзывы</a>
+                <a href="faq.html">FAQ</a>
+                <a href="contacts.html">Контакты</a>
+            </nav>
+            <div class="header-btns" id="authArea">
+                <button class="btn-outline" id="authProfileBtn">Войти</button>
+                <a href="prices.html" class="btn-primary">Пополнить сейчас</a>
+            </div>
+        </div>
     </header>
 
     <main class="container">
@@ -76,8 +115,8 @@
         </section>
 
         <div class="terms">
-            <label><input type="checkbox" id="agreeCheckbox"> Я понимаю и подтверждаю, что передаю данные для входа добровольно...</label>
-            <p class="important-note">⚠️ Не входить в игру до завершения доната.</p>
+            <label><input type="checkbox" id="agreeCheckbox"> Я понимаю и подтверждаю, что передаю данные для входа добровольно и по собственному желанию, обязуюсь не входить в игру до момента завершения заказа и предоставить код из электронной почты для входа в FC Mobile при необходимости.</label>
+            <p class="important-note">⚠️ Перед оформлением убедитесь, что набор доступен в вашей игре. Нельзя входить в игру во время пополнения, иначе заказ будет утерян.</p>
         </div>
 
         <div class="cart-summary" id="cartSection" style="display: none;">
@@ -88,15 +127,56 @@
         </div>
     </main>
 
-    <footer><!-- как в index --></footer>
+    <footer>
+        <p>© 2025 FC MOBILE GOLAZO. Все права защищены.</p>
+        <div class="social-links">
+            <a href="https://t.me/FCMOBILEGOLAZO" target="_blank"><i class="fab fa-telegram"></i></a>
+        </div>
+    </footer>
 
-    <!-- Модалка входа/регистрации -->
+    <!-- Модальное окно входа/регистрации -->
     <div class="modal" id="authModal">
-        <!-- полный код модалки -->
+        <div class="modal-content">
+            <button class="modal-close" id="closeAuthModal">&times;</button>
+            <div class="modal-tabs">
+                <div class="modal-tab active" data-tab="login">Вход</div>
+                <div class="modal-tab" data-tab="register">Регистрация</div>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Имя пользователя (латиница)</label>
+                    <input type="text" id="loginName" placeholder="username" required>
+                    <div class="error-msg" id="loginError"></div>
+                </div>
+                <div class="form-group">
+                    <label>Пароль</label>
+                    <input type="password" id="loginPassword" placeholder="Пароль" required>
+                </div>
+                <button type="submit" class="submit-btn">Войти</button>
+            </form>
+            <form id="registerForm" style="display: none;">
+                <div class="form-group">
+                    <label>Имя пользователя (латиница)</label>
+                    <input type="text" id="regName" placeholder="username" required>
+                    <div class="error-msg" id="regNameError"></div>
+                </div>
+                <div class="form-group">
+                    <label>Пароль (минимум 6 символов)</label>
+                    <input type="password" id="regPassword" placeholder="Пароль" required>
+                    <div class="error-msg" id="regPassError"></div>
+                </div>
+                <div class="form-group">
+                    <label>Повторите пароль</label>
+                    <input type="password" id="regPassword2" placeholder="Пароль ещё раз" required>
+                    <div class="error-msg" id="regPass2Error"></div>
+                </div>
+                <button type="submit" class="submit-btn">Зарегистрироваться</button>
+            </form>
+        </div>
     </div>
 
     <script>
-        // packages data
+        // ====== Данные пакетов ======
         const packages = [
             { amount: 100, priceOurs: 90, priceGame: 99 },
             { amount: 520, priceOurs: 428, priceGame: 449, popular: true },
@@ -105,7 +185,228 @@
             { amount: 5750, priceOurs: 4400, priceGame: 4690 },
             { amount: 12000, priceOurs: 8780, priceGame: 9490 }
         ];
-        // ... (весь код авторизации, корзины, рендера карточек)
+
+        // ====== Авторизация ======
+        const USERS_KEY = 'golazo_users';
+        const CURRENT_USER_KEY = 'golazo_currentUser';
+        const CART_KEY = 'golazo_cart';
+
+        const getUsers = () => JSON.parse(localStorage.getItem(USERS_KEY)) || [];
+        const saveUsers = (users) => localStorage.setItem(USERS_KEY, JSON.stringify(users));
+        const getCurrentUser = () => JSON.parse(localStorage.getItem(CURRENT_USER_KEY));
+        const setCurrentUser = (user) => localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+        const clearCurrentUser = () => localStorage.removeItem(CURRENT_USER_KEY);
+        const getCart = () => JSON.parse(localStorage.getItem(CART_KEY)) || [];
+        const saveCart = (cart) => localStorage.setItem(CART_KEY, JSON.stringify(cart));
+
+        // ====== Рендер шапки ======
+        function renderAuthArea() {
+            const user = getCurrentUser();
+            const authArea = document.getElementById('authArea');
+            authArea.innerHTML = `
+                <button class="btn-outline" id="authProfileBtn">${user ? user.name : 'Войти'}</button>
+                <a href="prices.html" class="btn-primary">Пополнить сейчас</a>
+            `;
+            document.getElementById('authProfileBtn').addEventListener('click', () => {
+                if (user) {
+                    if (confirm(`Вы вошли как ${user.name}. Выйти?`)) {
+                        clearCurrentUser();
+                        renderAuthArea();
+                    }
+                } else {
+                    openAuthModal();
+                }
+            });
+        }
+
+        // ====== Модальное окно ======
+        const authModal = document.getElementById('authModal');
+        const closeAuthModalBtn = document.getElementById('closeAuthModal');
+        const tabs = document.querySelectorAll('.modal-tab');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+
+        function openAuthModal() {
+            authModal.classList.add('active');
+            loginForm.reset();
+            registerForm.reset();
+            hideAuthErrors();
+            switchAuthTab('login');
+        }
+        function closeAuthModal() { authModal.classList.remove('active'); }
+        function hideAuthErrors() {
+            ['loginError', 'regNameError', 'regPassError', 'regPass2Error'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.display = 'none';
+            });
+        }
+        function switchAuthTab(tab) {
+            tabs.forEach(t => t.classList.remove('active'));
+            if (tab === 'login') {
+                document.querySelector('[data-tab="login"]').classList.add('active');
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+            } else {
+                document.querySelector('[data-tab="register"]').classList.add('active');
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+            }
+            hideAuthErrors();
+        }
+
+        function isValidUsername(name) { return /^[a-zA-Z0-9]+$/.test(name); }
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            hideAuthErrors();
+            const name = document.getElementById('loginName').value.trim();
+            const pass = document.getElementById('loginPassword').value;
+            if (!isValidUsername(name)) {
+                document.getElementById('loginError').textContent = 'Имя только латиницей';
+                document.getElementById('loginError').style.display = 'block';
+                return;
+            }
+            const users = getUsers();
+            const user = users.find(u => u.name.toLowerCase() === name.toLowerCase() && u.password === pass);
+            if (!user) {
+                document.getElementById('loginError').textContent = 'Неверное имя или пароль';
+                document.getElementById('loginError').style.display = 'block';
+                return;
+            }
+            setCurrentUser({ name: user.name, id: user.id });
+            closeAuthModal();
+            renderAuthArea();
+        });
+
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            hideAuthErrors();
+            const name = document.getElementById('regName').value.trim();
+            const pass = document.getElementById('regPassword').value;
+            const pass2 = document.getElementById('regPassword2').value;
+            if (!isValidUsername(name)) {
+                document.getElementById('regNameError').textContent = 'Имя только латиницей';
+                document.getElementById('regNameError').style.display = 'block';
+                return;
+            }
+            if (pass.length < 6) {
+                document.getElementById('regPassError').textContent = 'Пароль от 6 символов';
+                document.getElementById('regPassError').style.display = 'block';
+                return;
+            }
+            if (pass !== pass2) {
+                document.getElementById('regPass2Error').textContent = 'Пароли не совпадают';
+                document.getElementById('regPass2Error').style.display = 'block';
+                return;
+            }
+            const users = getUsers();
+            if (users.some(u => u.name.toLowerCase() === name.toLowerCase())) {
+                document.getElementById('regNameError').textContent = 'Пользователь уже существует';
+                document.getElementById('regNameError').style.display = 'block';
+                return;
+            }
+            const newUser = { name, password: pass, id: 'U' + Math.random().toString(16).slice(2,10).toUpperCase() };
+            users.push(newUser);
+            saveUsers(users);
+            setCurrentUser({ name: newUser.name, id: newUser.id });
+            closeAuthModal();
+            renderAuthArea();
+        });
+
+        tabs.forEach(tab => tab.addEventListener('click', () => switchAuthTab(tab.dataset.tab)));
+        closeAuthModalBtn.addEventListener('click', closeAuthModal);
+        window.addEventListener('click', (e) => { if (e.target === authModal) closeAuthModal(); });
+
+        // ====== Каталог ======
+        const packagesContainer = document.getElementById('packagesContainer');
+        packages.forEach(pkg => {
+            const card = document.createElement('div');
+            card.className = 'package-card' + (pkg.popular ? ' popular' : '');
+            card.innerHTML = `
+                ${pkg.popular ? '<span class="popular-badge">Хит</span>' : ''}
+                <div class="package-amount">${pkg.amount.toLocaleString()} FC POINTS</div>
+                <div class="package-bonus">При активном x2-бонусе вы получите в 2 раза больше монет.</div>
+                <div class="package-prices">
+                    <span class="our-price">${pkg.priceOurs} ₽</span>
+                    <span class="game-price">${pkg.priceGame} ₽ в игре</span>
+                </div>
+                <button class="add-to-cart" data-amount="${pkg.amount}" data-price="${pkg.priceOurs}">В корзину</button>
+            `;
+            packagesContainer.appendChild(card);
+        });
+
+        // ====== Корзина ======
+        let cart = getCart();
+        const cartSection = document.getElementById('cartSection');
+        const cartItemsEl = document.getElementById('cartItems');
+        const cartTotalEl = document.getElementById('cartTotal');
+        const agreeCheckbox = document.getElementById('agreeCheckbox');
+        const orderBtn = document.getElementById('orderBtn');
+
+        function updateCartUI() {
+            if (cart.length === 0) {
+                cartSection.style.display = 'none';
+                return;
+            }
+            cartSection.style.display = 'block';
+            cartItemsEl.innerHTML = '';
+            let total = 0;
+            cart.forEach((item, idx) => {
+                total += item.price;
+                const li = document.createElement('li');
+                li.innerHTML = `${item.amount.toLocaleString()} FC Points <span>${item.price} ₽ <button class="remove-item" data-index="${idx}" style="background:none;border:none;color:#FF4D6A;cursor:pointer;">✕</button></span>`;
+                cartItemsEl.appendChild(li);
+            });
+            cartTotalEl.textContent = total + ' ₽';
+            orderBtn.disabled = !agreeCheckbox.checked || !getCurrentUser();
+        }
+
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('add-to-cart')) {
+                if (!getCurrentUser()) {
+                    openAuthModal();
+                    return;
+                }
+                const btn = e.target;
+                const amount = parseInt(btn.dataset.amount);
+                const price = parseInt(btn.dataset.price);
+                cart.push({ amount, price });
+                saveCart(cart);
+                updateCartUI();
+            }
+        });
+
+        agreeCheckbox.addEventListener('change', () => {
+            orderBtn.disabled = !agreeCheckbox.checked || !getCurrentUser();
+        });
+
+        cartItemsEl.addEventListener('click', (e) => {
+            if (e.target.classList.contains('remove-item')) {
+                const idx = parseInt(e.target.dataset.index);
+                cart.splice(idx, 1);
+                saveCart(cart);
+                updateCartUI();
+            }
+        });
+
+        orderBtn.addEventListener('click', () => {
+            if (!getCurrentUser()) {
+                openAuthModal();
+                return;
+            }
+            alert('Заказ оформлен (демо). После оплаты начнётся пополнение.');
+            cart = [];
+            saveCart(cart);
+            updateCartUI();
+        });
+
+        // ====== Инициализация ======
+        updateCartUI();
+        renderAuthArea();
+
+        window.addEventListener('scroll', () => {
+            document.querySelector('header').classList.toggle('scrolled', window.scrollY > 50);
+        });
     </script>
 </body>
 </html>
