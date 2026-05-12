@@ -3,259 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FC MOBILE GOLAZO — Пополнение FC Points</title>
+    <title>FC MOBILE GOLAZO — Главная</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #0A0A0A;
-            color: #FFFFFF;
-            overflow-x: hidden;
-        }
+        body { font-family: 'Inter', sans-serif; background: #0A0A0A; color: #FFFFFF; overflow-x: hidden; }
         .container { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
-
-        /* header */
-        header {
-            position: sticky; top: 0; z-index: 100;
-            background: rgba(10,10,10,0.85); backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(0,255,133,0.15);
-            padding: 18px 0;
-            transition: 0.3s;
-        }
+        header { position: sticky; top: 0; z-index: 100; background: rgba(10,10,10,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,255,133,0.15); padding: 18px 0; transition: 0.3s; }
         header.scrolled { box-shadow: 0 0 20px rgba(0,255,133,0.3); }
         .header-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
-        .logo { display: flex; align-items: center; gap: 12px; }
+        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
         .logo-icon { font-size: 2.2rem; color: #00FF85; filter: drop-shadow(0 0 8px #00FF85); }
         .logo-text { font-size: 1.8rem; font-weight: 800; color: #FFFFFF; letter-spacing: -0.5px; }
         .logo-text span { color: #00FF85; }
         nav { display: flex; gap: 28px; }
         nav a { color: #AAAAAA; text-decoration: none; font-weight: 500; transition: 0.2s; }
-        nav a:hover { color: #00FF85; text-shadow: 0 0 6px #00FF85; }
+        nav a:hover, nav a.active { color: #00FF85; text-shadow: 0 0 6px #00FF85; }
         .header-btns { display: flex; align-items: center; gap: 12px; }
-        .btn-outline {
-            background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 10px 22px;
-            border-radius: 40px; color: white; cursor: pointer; font-weight: 600; transition: 0.2s;
-        }
-        .btn-outline:hover { border-color: #00FF85; color: #00FF85; box-shadow: 0 0 10px rgba(0,255,133,0.3); }
-        .btn-primary {
-            background: #00FF85; border: none; padding: 10px 24px; border-radius: 40px;
-            color: #0A0A0A; font-weight: 700; cursor: pointer; transition: 0.2s;
-        }
-        .btn-primary:hover { background: #00cc6a; transform: scale(0.98); }
-
-        /* hero */
-        .hero {
-            display: flex; align-items: center; justify-content: space-between; gap: 40px;
-            padding: 80px 0 100px; flex-wrap: wrap;
-        }
+        .btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 10px 22px; border-radius: 40px; color: white; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .btn-outline:hover { border-color: #00FF85; color: #00FF85; }
+        .btn-primary { background: #00FF85; border: none; padding: 10px 24px; border-radius: 40px; color: #0A0A0A; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .btn-primary:hover { background: #00cc6a; }
+        .cart-btn { position: relative; background: transparent; border: 1px solid #00FF85; color: #00FF85; padding: 10px 16px; border-radius: 40px; cursor: pointer; font-size: 1.2rem; transition: 0.2s; }
+        .cart-btn:hover { background: rgba(0,255,133,0.1); }
+        .cart-count { position: absolute; top: -8px; right: -8px; background: #FF4D6A; color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+        .hero { display: flex; align-items: center; justify-content: space-between; gap: 40px; padding: 80px 0 100px; flex-wrap: wrap; }
         .hero-text { flex: 1; min-width: 300px; }
         .hero-text h1 { font-size: 3.5rem; font-weight: 800; line-height: 1.2; margin-bottom: 20px; }
         .hero-text h1 .green { color: #00FF85; text-shadow: 0 0 10px rgba(0,255,133,0.5); }
         .hero-text p { font-size: 1.2rem; color: #AAAAAA; margin-bottom: 30px; }
         .hero-img { flex: 1; min-width: 300px; text-align: center; }
         .hero-img img { max-width: 100%; border-radius: 20px; box-shadow: 0 0 30px rgba(0,255,133,0.3); }
-
-        /* преимущества */
-        .advantages {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px;
-            margin: 80px 0;
-        }
-        .adv-card {
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(0,255,133,0.2);
-            border-radius: 20px; padding: 28px 20px; text-align: center; backdrop-filter: blur(6px);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
+        .advantages { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; margin: 80px 0; }
+        .adv-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(0,255,133,0.2); border-radius: 20px; padding: 28px 20px; text-align: center; backdrop-filter: blur(6px); transition: transform 0.3s, box-shadow 0.3s; }
         .adv-card:hover { transform: translateY(-6px); box-shadow: 0 10px 30px rgba(0,255,133,0.2); }
         .adv-card i { font-size: 2.5rem; color: #00FF85; margin-bottom: 16px; }
         .adv-card h3 { font-weight: 600; margin-bottom: 10px; }
-
-        /* каталог */
-        .catalog { margin: 100px 0; }
-        .section-title { font-size: 2.5rem; font-weight: 800; text-align: center; margin-bottom: 60px; color: #FFFFFF; }
-        .section-title .green { color: #00FF85; }
-        .packages {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;
-        }
-        .package-card {
-            background: rgba(20,20,20,0.7); backdrop-filter: blur(8px);
-            border: 1px solid rgba(0,255,133,0.2); border-radius: 28px; padding: 32px 20px;
-            text-align: center; transition: 0.3s; position: relative; overflow: hidden;
-        }
-        .package-card:hover {
-            transform: translateY(-8px); border-color: #00FF85;
-            box-shadow: 0 15px 35px rgba(0,255,133,0.25);
-        }
-        .package-card.popular { border-color: #00FF85; }
-        .popular-badge {
-            position: absolute; top: 16px; right: 16px; background: #00FF85; color: #000;
-            font-size: 0.75rem; font-weight: 700; padding: 4px 12px; border-radius: 20px;
-        }
-        .package-amount { font-size: 2rem; font-weight: 800; color: #00FF85; }
-        .package-bonus { font-size: 0.9rem; color: #00BFFF; margin-bottom: 8px; }
-        .package-prices { margin: 16px 0; }
-        .our-price { font-size: 2.2rem; font-weight: 700; color: #FFFFFF; }
-        .game-price { font-size: 1rem; color: #AAAAAA; text-decoration: line-through; margin-left: 12px; }
-        .add-to-cart {
-            background: #00FF85; color: #0A0A0A; border: none; padding: 10px 28px;
-            border-radius: 40px; font-weight: 700; cursor: pointer; transition: 0.2s;
-        }
-        .add-to-cart:hover { background: #00cc6a; }
-
-        /* steps */
-        .steps { margin: 100px 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 32px; }
-        .step { text-align: center; }
-        .step-number { font-size: 2.5rem; font-weight: 800; color: #00FF85; }
-        .step h3 { margin: 12px 0 8px; font-weight: 600; }
-        .step p { color: #AAAAAA; }
-
-        /* отзывы, FAQ, оплата */
-        .reviews, .faq, .payment { margin: 80px 0; }
-        .faq-item { border-bottom: 1px solid rgba(255,255,255,0.1); padding: 20px 0; }
-        .faq-question { font-weight: 600; cursor: pointer; transition: 0.2s; }
-        .faq-question:hover { color: #00FF85; }
-        .faq-answer { color: #AAAAAA; margin-top: 12px; display: none; }
-        .faq-item.open .faq-answer { display: block; }
-
-        .payment-methods { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
-        .payment-methods i { font-size: 2.5rem; color: #AAAAAA; transition: 0.2s; }
-        .payment-methods i:hover { color: #00FF85; text-shadow: 0 0 8px #00FF85; }
-
-        /* чекбокс + условия */
-        .terms { background: rgba(255,255,255,0.03); border-radius: 20px; padding: 20px; margin: 40px 0; }
-        .terms label { display: flex; align-items: baseline; gap: 12px; cursor: pointer; color: #AAAAAA; font-size: 0.9rem; }
-        .terms input[type="checkbox"] { accent-color: #00FF85; transform: scale(1.2); }
-        .important-note { color: #FFB800; font-size: 0.9rem; margin-top: 12px; }
-        .safe-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(0,255,133,0.1); border: 1px solid #00FF85; border-radius: 30px; padding: 8px 20px; color: #00FF85; font-weight: 600; margin-top: 12px; }
-
-        /* корзина */
-        .cart-summary { background: rgba(20,20,20,0.8); border: 1px solid rgba(0,255,133,0.3); border-radius: 24px; padding: 24px; margin: 30px 0; }
-        .cart-summary h3 { font-weight: 700; margin-bottom: 16px; }
-        #cartItems { list-style: none; margin-bottom: 16px; }
-        #cartItems li { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .total { font-size: 1.4rem; font-weight: 700; color: #00FF85; }
-        .order-btn { background: #00FF85; color: #0A0A0A; border: none; padding: 14px 32px; border-radius: 40px; font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: 0.2s; }
-        .order-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-        /* модалка входа */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(6px); justify-content: center; align-items: center; z-index: 1000; }
-        .modal.active { display: flex; }
-        .modal-content { background: rgba(20,20,20,0.95); backdrop-filter: blur(12px); border: 1px solid rgba(0,255,133,0.3); border-radius: 32px; padding: 32px; max-width: 400px; width: 90%; position: relative; }
-        .modal-close { position: absolute; top: 16px; right: 20px; background: none; border: none; color: #aaa; font-size: 1.5rem; cursor: pointer; }
-        .modal-tabs { display: flex; margin-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .modal-tab { flex: 1; text-align: center; padding: 12px; cursor: pointer; font-weight: 500; color: #aaa; transition: 0.2s; border-bottom: 2px solid transparent; }
-        .modal-tab.active { color: #00FF85; border-bottom-color: #00FF85; }
-        .form-group { margin-bottom: 16px; }
-        .form-group label { display: block; margin-bottom: 6px; font-size: 0.85rem; color: #ccc; }
-        .form-group input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 12px; color: white; }
-        .form-group input:focus { outline: none; border-color: #00FF85; }
-        .error-msg { color: #FF4D6A; font-size: 0.8rem; margin-top: 4px; display: none; }
-        .submit-btn { background: #00FF85; border: none; width: 100%; padding: 12px; border-radius: 40px; font-weight: 700; color: #0A0A0A; cursor: pointer; }
-
-        /* профиль */
-        .profile-info { display: flex; align-items: center; gap: 12px; }
-        .user-data { display: flex; flex-direction: column; color: white; }
-        .user-name { font-weight: 600; }
-        .logout-btn { background: none; border: none; color: #FF4D6A; cursor: pointer; font-weight: 600; }
-
         footer { padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; color: #888; margin-top: 80px; }
         footer .social-links a { color: #aaa; margin: 0 10px; font-size: 1.2rem; }
         footer .social-links a:hover { color: #00FF85; }
-
-        @media (max-width: 768px) {
-            .hero-text h1 { font-size: 2.2rem; }
-        }
-
-        /* Telegram link styling */
-        .telegram-link {
-            display: inline-flex; align-items: center; gap: 8px;
-            background: rgba(0,255,133,0.1); border: 1px solid #00FF85;
-            border-radius: 30px; padding: 8px 20px; color: #00FF85;
-            font-weight: 600; text-decoration: none; margin-top: 12px;
-        }
-        .telegram-link:hover { background: rgba(0,255,133,0.2); }
+        @media (max-width: 768px) { .hero-text h1 { font-size: 2.2rem; } }
     </style>
 </head>
 <body>
     <header id="header">
         <div class="container header-inner">
-            <div class="logo">
+            <a href="index.html" class="logo">
                 <div class="logo-icon"><i class="fas fa-futbol"></i></div>
                 <div class="logo-text">GOLAZO<span>FC</span></div>
-            </div>
+            </a>
             <nav>
-                <a href="#">Главная</a>
-                <a href="#prices">Цены</a>
-                <a href="#how">Как работает</a>
-                <a href="#reviews">Отзывы</a>
-                <a href="#faq">FAQ</a>
-                <a href="#contacts">Контакты</a>
+                <a href="index.html" class="active">Главная</a>
+                <a href="prices.html">Цены</a>
+                <a href="how.html">Как работает</a>
+                <a href="reviews.html">Отзывы</a>
+                <a href="faq.html">FAQ</a>
+                <a href="contacts.html">Контакты</a>
             </nav>
             <div class="header-btns" id="authArea">
                 <button class="btn-outline" id="authBtn">Войти</button>
-                <button class="btn-primary" id="rechargeBtn">Пополнить сейчас</button>
+                <button class="cart-btn" id="cartIconBtn"><i class="fas fa-shopping-cart"></i><span class="cart-count" id="cartCount">0</span></button>
             </div>
         </div>
     </header>
 
     <main class="container">
-        <!-- Hero -->
         <section class="hero">
             <div class="hero-text">
                 <h1>Пополнение <span class="green">FC Points</span><br>быстро, безопасно, выгодно</h1>
                 <p>Официальные ключи, моментальная доставка, кешбек до 5%</p>
-                <button class="btn-primary" id="heroRechargeBtn" style="font-size: 1.2rem;">Пополнить сейчас</button>
+                <a href="prices.html" class="btn-primary" style="text-decoration: none; display: inline-block; font-size: 1.2rem; padding: 12px 32px;">Пополнить сейчас</a>
             </div>
             <div class="hero-img">
                 <img src="https://via.placeholder.com/500x300/0A0A0A/00FF85?text=FC+Mobile+Points" alt="FC Points">
             </div>
         </section>
 
-        <!-- Преимущества -->
         <section class="advantages">
             <div class="adv-card"><i class="fas fa-shield-alt"></i><h3>Полностью безопасно 🛡️</h3><p>Официальные каналы пополнения</p></div>
             <div class="adv-card"><i class="fas fa-clock"></i><h3>Среднее время доставки: 10–25 мин 🕑</h3></div>
             <div class="adv-card"><i class="fas fa-coins"></i><h3>Кэшбек 💰</h3><p>До 5% от суммы заказа</p></div>
             <div class="adv-card"><i class="fas fa-tags"></i><h3>Выгодно 💸</h3><p>Цены ниже, чем в игре</p></div>
-        </section>
-
-        <!-- Каталог -->
-        <section class="catalog" id="prices">
-            <h2 class="section-title">Популярные <span class="green">предложения</span></h2>
-            <div class="packages" id="packagesContainer"></div>
-        </section>
-
-        <!-- Как это работает -->
-        <section class="steps" id="how">
-            <div class="step"><div class="step-number">1</div><h3>Выберите пакет</h3><p>Нажмите на подходящий</p></div>
-            <div class="step"><div class="step-number">2</div><h3>Войдите в аккаунт</h3><p>Заполните данные EA</p></div>
-            <div class="step"><div class="step-number">3</div><h3>Оплатите</h3><p>Через удобную систему</p></div>
-            <div class="step"><div class="step-number">4</div><h3>Получите FC Points</h3><p>В течение 10–25 мин</p></div>
-        </section>
-
-        <!-- Условия -->
-        <div class="terms" id="terms">
-            <label><input type="checkbox" id="agreeCheckbox"> Я понимаю и подтверждаю, что передаю данные для входа добровольно и по собственному желанию, обязуюсь не входить в игру до момента завершения заказа и предоставить код из электронной почты для входа в FC Mobile при необходимости.</label>
-            <p class="important-note">⚠️ Перед оформлением убедитесь, что набор доступен в вашей игре. Нельзя входить в игру во время пополнения, иначе заказ будет утерян.</p>
-            <div class="safe-badge"><i class="fas fa-lock"></i> Полностью безопасно</div>
-        </div>
-
-        <!-- Корзина -->
-        <div class="cart-summary" id="cartSection" style="display: none;">
-            <h3>Ваш заказ</h3>
-            <ul id="cartItems"></ul>
-            <div class="total" id="cartTotal">0 ₽</div>
-            <button class="order-btn" id="orderBtn" disabled>Оформить заказ</button>
-        </div>
-
-        <!-- Контакты (якорь #contacts) -->
-        <section id="contacts" style="margin: 80px 0; text-align: center;">
-            <h2 class="section-title">Наши <span class="green">контакты</span></h2>
-            <p style="color: #AAAAAA; margin-bottom: 16px;">Свяжитесь с нами в Telegram</p>
-            <a href="https://t.me/FCMOBILEGOLAZO" target="_blank" class="telegram-link">
-                <i class="fab fa-telegram"></i> @FCMOBILEGOLAZO
-            </a>
         </section>
     </main>
 
@@ -267,7 +96,18 @@
         </div>
     </footer>
 
-    <!-- Модальное окно авторизации -->
+    <!-- Модалка корзины -->
+    <div class="modal" id="cartModal">
+        <div class="modal-content">
+            <button class="modal-close" id="closeCartModal">&times;</button>
+            <h3 style="margin-bottom: 16px;">Корзина</h3>
+            <ul id="cartItemsList" style="list-style: none; margin-bottom: 16px;"></ul>
+            <div style="font-weight: 700; margin-bottom: 16px;">Итого: <span id="cartTotalPrice">0</span> ₽</div>
+            <button class="submit-btn" id="checkoutFromModal">Оформить заказ</button>
+        </div>
+    </div>
+
+    <!-- Модалка авторизации -->
     <div class="modal" id="authModal">
         <div class="modal-content">
             <button class="modal-close" id="closeAuthModal">&times;</button>
@@ -308,272 +148,6 @@
         </div>
     </div>
 
-    <script>
-        // ============ ДАННЫЕ ПАКЕТОВ ============
-        const packages = [
-            { amount: 100, priceOurs: 90, priceGame: 99 },
-            { amount: 520, priceOurs: 428, priceGame: 449, popular: true },
-            { amount: 1070, priceOurs: 881, priceGame: 889 },
-            { amount: 2200, priceOurs: 1761, priceGame: 1790 },
-            { amount: 5750, priceOurs: 4400, priceGame: 4690 },
-            { amount: 12000, priceOurs: 8780, priceGame: 9490 }
-        ];
-
-        // ============ АВТОРИЗАЦИЯ ============
-        const USERS_KEY = 'golazo_users';
-        const CURRENT_USER_KEY = 'golazo_currentUser';
-        const CART_KEY = 'golazo_cart';
-
-        const getUsers = () => JSON.parse(localStorage.getItem(USERS_KEY)) || [];
-        const saveUsers = (users) => localStorage.setItem(USERS_KEY, JSON.stringify(users));
-        const getCurrentUser = () => JSON.parse(localStorage.getItem(CURRENT_USER_KEY));
-        const setCurrentUser = (user) => localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
-        const clearCurrentUser = () => localStorage.removeItem(CURRENT_USER_KEY);
-
-        // ============ КОРЗИНА ============
-        const getCart = () => JSON.parse(localStorage.getItem(CART_KEY)) || [];
-        const saveCart = (cart) => localStorage.setItem(CART_KEY, JSON.stringify(cart));
-
-        // ============ DOM элементы ============
-        const authArea = document.getElementById('authArea');
-        const authModal = document.getElementById('authModal');
-        const closeAuthModalBtn = document.getElementById('closeAuthModal');
-        const tabs = document.querySelectorAll('.modal-tab');
-        const loginForm = document.getElementById('loginForm');
-        const registerForm = document.getElementById('registerForm');
-        const loginName = document.getElementById('loginName');
-        const loginPassword = document.getElementById('loginPassword');
-        const loginError = document.getElementById('loginError');
-        const regName = document.getElementById('regName');
-        const regPassword = document.getElementById('regPassword');
-        const regPassword2 = document.getElementById('regPassword2');
-        const regNameError = document.getElementById('regNameError');
-        const regPassError = document.getElementById('regPassError');
-        const regPass2Error = document.getElementById('regPass2Error');
-
-        const packagesContainer = document.getElementById('packagesContainer');
-        const cartSection = document.getElementById('cartSection');
-        const cartItemsEl = document.getElementById('cartItems');
-        const cartTotalEl = document.getElementById('cartTotal');
-        const agreeCheckbox = document.getElementById('agreeCheckbox');
-        const orderBtn = document.getElementById('orderBtn');
-
-        // ============ Рендер профиля ============
-        function renderAuthArea() {
-            const user = getCurrentUser();
-            authArea.innerHTML = `
-                <button class="btn-outline" id="authProfileBtn">${user ? user.name : 'Войти'}</button>
-                <button class="btn-primary" id="rechargeBtn">Пополнить сейчас</button>
-            `;
-            document.getElementById('rechargeBtn').addEventListener('click', () => {
-                if (!getCurrentUser()) {
-                    openAuthModal();
-                } else {
-                    // прокрутить к корзине или показать сообщение
-                    document.getElementById('cartSection').scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-            document.getElementById('authProfileBtn').addEventListener('click', () => {
-                if (getCurrentUser()) {
-                    // мини-меню или выход
-                    if (confirm(`Вы вошли как ${getCurrentUser().name}. Выйти?`)) {
-                        clearCurrentUser();
-                        renderAuthArea();
-                    }
-                } else {
-                    openAuthModal();
-                }
-            });
-        }
-
-        function openAuthModal() {
-            authModal.classList.add('active');
-            loginForm.reset();
-            registerForm.reset();
-            hideAuthErrors();
-            switchTab('login');
-        }
-        function closeAuthModal() { authModal.classList.remove('active'); }
-        function hideAuthErrors() {
-            loginError.style.display = 'none';
-            regNameError.style.display = 'none';
-            regPassError.style.display = 'none';
-            regPass2Error.style.display = 'none';
-        }
-        function switchTab(tabName) {
-            tabs.forEach(t => t.classList.remove('active'));
-            if (tabName === 'login') {
-                document.querySelector('[data-tab="login"]').classList.add('active');
-                loginForm.style.display = 'block';
-                registerForm.style.display = 'none';
-            } else {
-                document.querySelector('[data-tab="register"]').classList.add('active');
-                loginForm.style.display = 'none';
-                registerForm.style.display = 'block';
-            }
-            hideAuthErrors();
-        }
-
-        function isValidUsername(name) { return /^[a-zA-Z0-9]+$/.test(name); }
-
-        // Вход
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            hideAuthErrors();
-            const name = loginName.value.trim();
-            const pass = loginPassword.value;
-            if (!isValidUsername(name)) {
-                loginError.textContent = 'Имя только латинские буквы и цифры';
-                loginError.style.display = 'block';
-                return;
-            }
-            const users = getUsers();
-            const user = users.find(u => u.name.toLowerCase() === name.toLowerCase() && u.password === pass);
-            if (!user) {
-                loginError.textContent = 'Неверное имя или пароль';
-                loginError.style.display = 'block';
-                return;
-            }
-            setCurrentUser({ name: user.name, id: user.id });
-            closeAuthModal();
-            renderAuthArea();
-        });
-
-        // Регистрация
-        registerForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            hideAuthErrors();
-            const name = regName.value.trim();
-            const pass = regPassword.value;
-            const pass2 = regPassword2.value;
-            if (!isValidUsername(name)) {
-                regNameError.textContent = 'Имя только латинские буквы и цифры';
-                regNameError.style.display = 'block';
-                return;
-            }
-            if (pass.length < 6) {
-                regPassError.textContent = 'Пароль от 6 символов';
-                regPassError.style.display = 'block';
-                return;
-            }
-            if (pass !== pass2) {
-                regPass2Error.textContent = 'Пароли не совпадают';
-                regPass2Error.style.display = 'block';
-                return;
-            }
-            const users = getUsers();
-            if (users.some(u => u.name.toLowerCase() === name.toLowerCase())) {
-                regNameError.textContent = 'Пользователь уже существует';
-                regNameError.style.display = 'block';
-                return;
-            }
-            const newUser = { name, password: pass, id: 'U' + Math.random().toString(16).slice(2, 10).toUpperCase() };
-            users.push(newUser);
-            saveUsers(users);
-            setCurrentUser({ name: newUser.name, id: newUser.id });
-            closeAuthModal();
-            renderAuthArea();
-        });
-
-        tabs.forEach(tab => tab.addEventListener('click', () => switchTab(tab.dataset.tab)));
-        closeAuthModalBtn.addEventListener('click', closeAuthModal);
-        window.addEventListener('click', (e) => { if (e.target === authModal) closeAuthModal(); });
-
-        // ============ Рендер каталога ============
-        packages.forEach(pkg => {
-            const card = document.createElement('div');
-            card.className = 'package-card' + (pkg.popular ? ' popular' : '');
-            card.innerHTML = `
-                ${pkg.popular ? '<span class="popular-badge">Хит</span>' : ''}
-                <div class="package-amount">${pkg.amount.toLocaleString()} FC POINTS</div>
-                <div class="package-bonus">При активном x2-бонусе вы получите в 2 раза больше монет.</div>
-                <div class="package-prices">
-                    <span class="our-price">${pkg.priceOurs} ₽</span>
-                    <span class="game-price">${pkg.priceGame} ₽ в игре</span>
-                </div>
-                <button class="add-to-cart" data-amount="${pkg.amount}" data-price="${pkg.priceOurs}">В корзину</button>
-            `;
-            packagesContainer.appendChild(card);
-        });
-
-        // ============ Логика корзины ============
-        let cart = getCart();
-        updateCartUI();
-
-        document.addEventListener('click', (e) => {
-            if (e.target.classList.contains('add-to-cart')) {
-                if (!getCurrentUser()) {
-                    openAuthModal();
-                    return;
-                }
-                const btn = e.target;
-                const amount = parseInt(btn.dataset.amount);
-                const price = parseInt(btn.dataset.price);
-                cart.push({ amount, price });
-                saveCart(cart);
-                updateCartUI();
-            }
-        });
-
-        function updateCartUI() {
-            if (cart.length === 0) {
-                cartSection.style.display = 'none';
-                return;
-            }
-            cartSection.style.display = 'block';
-            cartItemsEl.innerHTML = '';
-            let total = 0;
-            cart.forEach((item, idx) => {
-                total += item.price;
-                const li = document.createElement('li');
-                li.innerHTML = `${item.amount.toLocaleString()} FC Points <span>${item.price} ₽ <button class="remove-item" data-index="${idx}" style="background:none;border:none;color:#FF4D6A;cursor:pointer;">✕</button></span>`;
-                cartItemsEl.appendChild(li);
-            });
-            cartTotalEl.textContent = total + ' ₽';
-            orderBtn.disabled = !agreeCheckbox.checked || !getCurrentUser();
-        }
-
-        agreeCheckbox.addEventListener('change', () => {
-            orderBtn.disabled = !agreeCheckbox.checked || !getCurrentUser();
-        });
-
-        // Удаление товара из корзины
-        cartItemsEl.addEventListener('click', (e) => {
-            if (e.target.classList.contains('remove-item')) {
-                const idx = parseInt(e.target.dataset.index);
-                cart.splice(idx, 1);
-                saveCart(cart);
-                updateCartUI();
-            }
-        });
-
-        orderBtn.addEventListener('click', () => {
-            if (!getCurrentUser()) {
-                openAuthModal();
-                return;
-            }
-            alert('Заказ оформлен (демо). После оплаты начнётся пополнение.');
-            cart = [];
-            saveCart(cart);
-            updateCartUI();
-        });
-
-        // При клике на "Пополнить сейчас" в hero
-        document.getElementById('heroRechargeBtn').addEventListener('click', () => {
-            if (!getCurrentUser()) {
-                openAuthModal();
-            } else {
-                document.getElementById('prices').scrollIntoView({ behavior: 'smooth' });
-            }
-        });
-
-        // Инициализация
-        renderAuthArea();
-
-        // Sticky header effect
-        window.addEventListener('scroll', () => {
-            document.querySelector('header').classList.toggle('scrolled', window.scrollY > 50);
-        });
-    </script>
+    <script src="common.js"></script>
 </body>
 </html>
