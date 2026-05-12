@@ -33,10 +33,10 @@
             <h2 style="text-align:center;">Вход для администратора</h2>
             <input type="text" id="adminLogin" placeholder="Логин" value="admin">
             <input type="password" id="adminPass" placeholder="Пароль" value="admin123">
-            <button class="login-btn" id="loginBtn">Войти</button>
+            <button class="login-btn" onclick="tryLogin()">Войти</button>
         </div>
         <div id="adminPanel" style="display:none;">
-            <button class="logout-btn" id="logoutBtn">Выйти</button>
+            <button class="logout-btn" onclick="logout()">Выйти</button>
             <h1>Заказы</h1>
             <div class="order-list" id="orderList"></div>
         </div>
@@ -49,23 +49,24 @@
         function getOrders() { return JSON.parse(localStorage.getItem(ORDERS_KEY)) || []; }
         function saveOrders(orders) { localStorage.setItem(ORDERS_KEY, JSON.stringify(orders)); }
 
-        function loginAdmin() {
-            const login = document.getElementById('adminLogin').value;
-            const pass = document.getElementById('adminPass').value;
+        function tryLogin() {
+            const login = document.getElementById('adminLogin').value.trim();
+            const pass = document.getElementById('adminPass').value.trim();
+            console.log('Попытка входа:', login, pass);
             if (login === ADMIN_CRED.login && pass === ADMIN_CRED.password) {
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('adminPanel').style.display = 'block';
-                sessionStorage.setItem('admin_logged', 'true');
                 renderOrders();
+                console.log('✅ Вход успешен');
             } else {
                 alert('Неверные логин или пароль');
+                console.log('❌ Неверные данные');
             }
         }
 
-        function logoutAdmin() {
+        function logout() {
             document.getElementById('loginScreen').style.display = 'block';
             document.getElementById('adminPanel').style.display = 'none';
-            sessionStorage.removeItem('admin_logged');
         }
 
         function changeStatus(orderId, newStatus, extra = {}) {
@@ -117,15 +118,7 @@
             });
         }
 
-        document.getElementById('loginBtn').addEventListener('click', loginAdmin);
-        document.getElementById('logoutBtn').addEventListener('click', logoutAdmin);
-
-        // Проверка сессии при загрузке
-        if (sessionStorage.getItem('admin_logged') === 'true') {
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('adminPanel').style.display = 'block';
-            renderOrders();
-        }
+        // Заранее не входим автоматически
     </script>
 </body>
 </html>
