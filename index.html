@@ -97,12 +97,11 @@
         .package-prices { margin: 16px 0; }
         .our-price { font-size: 2.2rem; font-weight: 700; color: #FFFFFF; }
         .game-price { font-size: 1rem; color: #AAAAAA; text-decoration: line-through; margin-left: 12px; }
-        .package-btn {
-            display: inline-block; background: #00FF85; color: #0A0A0A; padding: 10px 28px;
-            border-radius: 40px; font-weight: 700; margin-top: 16px; cursor: pointer; transition: 0.2s;
-            text-decoration: none;
+        .add-to-cart {
+            background: #00FF85; color: #0A0A0A; border: none; padding: 10px 28px;
+            border-radius: 40px; font-weight: 700; cursor: pointer; transition: 0.2s;
         }
-        .package-btn:hover { background: #00cc6a; }
+        .add-to-cart:hover { background: #00cc6a; }
 
         /* steps */
         .steps { margin: 100px 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 32px; }
@@ -111,7 +110,7 @@
         .step h3 { margin: 12px 0 8px; font-weight: 600; }
         .step p { color: #AAAAAA; }
 
-        /* отзывы, FAQ, оплата — упрощённые секции */
+        /* отзывы, FAQ, оплата */
         .reviews, .faq, .payment { margin: 80px 0; }
         .faq-item { border-bottom: 1px solid rgba(255,255,255,0.1); padding: 20px 0; }
         .faq-question { font-weight: 600; cursor: pointer; transition: 0.2s; }
@@ -128,9 +127,9 @@
         .terms label { display: flex; align-items: baseline; gap: 12px; cursor: pointer; color: #AAAAAA; font-size: 0.9rem; }
         .terms input[type="checkbox"] { accent-color: #00FF85; transform: scale(1.2); }
         .important-note { color: #FFB800; font-size: 0.9rem; margin-top: 12px; }
-        .safe-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(0,255,133,0.1); border: 1px solid #00FF85; border-radius: 30px; padding: 8px 20px; color: #00FF85; font-weight: 600; }
+        .safe-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(0,255,133,0.1); border: 1px solid #00FF85; border-radius: 30px; padding: 8px 20px; color: #00FF85; font-weight: 600; margin-top: 12px; }
 
-        /* корзина и оформление */
+        /* корзина */
         .cart-summary { background: rgba(20,20,20,0.8); border: 1px solid rgba(0,255,133,0.3); border-radius: 24px; padding: 24px; margin: 30px 0; }
         .cart-summary h3 { font-weight: 700; margin-bottom: 16px; }
         #cartItems { list-style: none; margin-bottom: 16px; }
@@ -167,6 +166,15 @@
         @media (max-width: 768px) {
             .hero-text h1 { font-size: 2.2rem; }
         }
+
+        /* Telegram link styling */
+        .telegram-link {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(0,255,133,0.1); border: 1px solid #00FF85;
+            border-radius: 30px; padding: 8px 20px; color: #00FF85;
+            font-weight: 600; text-decoration: none; margin-top: 12px;
+        }
+        .telegram-link:hover { background: rgba(0,255,133,0.2); }
     </style>
 </head>
 <body>
@@ -186,7 +194,7 @@
             </nav>
             <div class="header-btns" id="authArea">
                 <button class="btn-outline" id="authBtn">Войти</button>
-                <button class="btn-primary">Пополнить сейчас</button>
+                <button class="btn-primary" id="rechargeBtn">Пополнить сейчас</button>
             </div>
         </div>
     </header>
@@ -197,7 +205,7 @@
             <div class="hero-text">
                 <h1>Пополнение <span class="green">FC Points</span><br>быстро, безопасно, выгодно</h1>
                 <p>Официальные ключи, моментальная доставка, кешбек до 5%</p>
-                <button class="btn-primary" style="font-size: 1.2rem;">Пополнить сейчас</button>
+                <button class="btn-primary" id="heroRechargeBtn" style="font-size: 1.2rem;">Пополнить сейчас</button>
             </div>
             <div class="hero-img">
                 <img src="https://via.placeholder.com/500x300/0A0A0A/00FF85?text=FC+Mobile+Points" alt="FC Points">
@@ -212,12 +220,10 @@
             <div class="adv-card"><i class="fas fa-tags"></i><h3>Выгодно 💸</h3><p>Цены ниже, чем в игре</p></div>
         </section>
 
-        <!-- Каталог (id="prices") -->
+        <!-- Каталог -->
         <section class="catalog" id="prices">
             <h2 class="section-title">Популярные <span class="green">предложения</span></h2>
-            <div class="packages">
-                <!-- Карточки генерируются JS, но для статики оставим -->
-            </div>
+            <div class="packages" id="packagesContainer"></div>
         </section>
 
         <!-- Как это работает -->
@@ -235,30 +241,75 @@
             <div class="safe-badge"><i class="fas fa-lock"></i> Полностью безопасно</div>
         </div>
 
-        <!-- Корзина и оформление -->
+        <!-- Корзина -->
         <div class="cart-summary" id="cartSection" style="display: none;">
             <h3>Ваш заказ</h3>
             <ul id="cartItems"></ul>
             <div class="total" id="cartTotal">0 ₽</div>
-            <button class="order-btn" id="orderBtn">Оформить заказ</button>
+            <button class="order-btn" id="orderBtn" disabled>Оформить заказ</button>
         </div>
+
+        <!-- Контакты (якорь #contacts) -->
+        <section id="contacts" style="margin: 80px 0; text-align: center;">
+            <h2 class="section-title">Наши <span class="green">контакты</span></h2>
+            <p style="color: #AAAAAA; margin-bottom: 16px;">Свяжитесь с нами в Telegram</p>
+            <a href="https://t.me/FCMOBILEGOLAZO" target="_blank" class="telegram-link">
+                <i class="fab fa-telegram"></i> @FCMOBILEGOLAZO
+            </a>
+        </section>
     </main>
 
     <footer>
         <p>© 2025 FC MOBILE GOLAZO. Все права защищены.</p>
         <div class="social-links">
-            <a href="#"><i class="fab fa-telegram"></i></a>
+            <a href="https://t.me/FCMOBILEGOLAZO" target="_blank"><i class="fab fa-telegram"></i></a>
             <a href="#"><i class="fab fa-twitter"></i></a>
         </div>
     </footer>
 
-    <!-- Модалка входа -->
+    <!-- Модальное окно авторизации -->
     <div class="modal" id="authModal">
-        <!-- ... аналогично AI-Hub ... -->
+        <div class="modal-content">
+            <button class="modal-close" id="closeAuthModal">&times;</button>
+            <div class="modal-tabs">
+                <div class="modal-tab active" data-tab="login">Вход</div>
+                <div class="modal-tab" data-tab="register">Регистрация</div>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Имя пользователя (латиница)</label>
+                    <input type="text" id="loginName" placeholder="username" required>
+                    <div class="error-msg" id="loginError"></div>
+                </div>
+                <div class="form-group">
+                    <label>Пароль</label>
+                    <input type="password" id="loginPassword" placeholder="Пароль" required>
+                </div>
+                <button type="submit" class="submit-btn">Войти</button>
+            </form>
+            <form id="registerForm" style="display: none;">
+                <div class="form-group">
+                    <label>Имя пользователя (латиница)</label>
+                    <input type="text" id="regName" placeholder="username" required>
+                    <div class="error-msg" id="regNameError"></div>
+                </div>
+                <div class="form-group">
+                    <label>Пароль (минимум 6 символов)</label>
+                    <input type="password" id="regPassword" placeholder="Пароль" required>
+                    <div class="error-msg" id="regPassError"></div>
+                </div>
+                <div class="form-group">
+                    <label>Повторите пароль</label>
+                    <input type="password" id="regPassword2" placeholder="Пароль ещё раз" required>
+                    <div class="error-msg" id="regPass2Error"></div>
+                </div>
+                <button type="submit" class="submit-btn">Зарегистрироваться</button>
+            </form>
+        </div>
     </div>
 
     <script>
-        // Data
+        // ============ ДАННЫЕ ПАКЕТОВ ============
         const packages = [
             { amount: 100, priceOurs: 90, priceGame: 99 },
             { amount: 520, priceOurs: 428, priceGame: 449, popular: true },
@@ -268,51 +319,203 @@
             { amount: 12000, priceOurs: 8780, priceGame: 9490 }
         ];
 
-        // Auth (упрощённо)
+        // ============ АВТОРИЗАЦИЯ ============
         const USERS_KEY = 'golazo_users';
         const CURRENT_USER_KEY = 'golazo_currentUser';
-        // ... (как в AI-Hub, но с новыми ключами)
-        // Рендер профиля, модалка входа, регистрация
-        // Корзина: добавление, удаление, оформление (алерт)
-        // Активация корзины при выборе пакета
+        const CART_KEY = 'golazo_cart';
 
-        // Рендер карточек каталога
-        const packagesContainer = document.querySelector('.packages');
-        packages.forEach(pkg => {
-            const card = document.createElement('div');
-            card.className = 'package-card' + (pkg.popular ? ' popular' : '');
-            card.innerHTML = `
-                ${pkg.popular ? '<span class="popular-badge">Хит</span>' : ''}
-                <div class="package-amount">${pkg.amount} FC POINTS</div>
-                <div class="package-bonus">При активном x2-бонусе вы получите в 2 раза больше монет.</div>
-                <div class="package-prices">
-                    <span class="our-price">${pkg.priceOurs} ₽</span>
-                    <span class="game-price">${pkg.priceGame} ₽ в игре</span>
-                </div>
-                <button class="package-btn add-to-cart" data-amount="${pkg.amount}" data-price="${pkg.priceOurs}">В корзину</button>
-            `;
-            packagesContainer.appendChild(card);
-        });
+        const getUsers = () => JSON.parse(localStorage.getItem(USERS_KEY)) || [];
+        const saveUsers = (users) => localStorage.setItem(USERS_KEY, JSON.stringify(users));
+        const getCurrentUser = () => JSON.parse(localStorage.getItem(CURRENT_USER_KEY));
+        const setCurrentUser = (user) => localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+        const clearCurrentUser = () => localStorage.removeItem(CURRENT_USER_KEY);
 
-        // Cart logic
-        let cart = [];
+        // ============ КОРЗИНА ============
+        const getCart = () => JSON.parse(localStorage.getItem(CART_KEY)) || [];
+        const saveCart = (cart) => localStorage.setItem(CART_KEY, JSON.stringify(cart));
+
+        // ============ DOM элементы ============
+        const authArea = document.getElementById('authArea');
+        const authModal = document.getElementById('authModal');
+        const closeAuthModalBtn = document.getElementById('closeAuthModal');
+        const tabs = document.querySelectorAll('.modal-tab');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const loginName = document.getElementById('loginName');
+        const loginPassword = document.getElementById('loginPassword');
+        const loginError = document.getElementById('loginError');
+        const regName = document.getElementById('regName');
+        const regPassword = document.getElementById('regPassword');
+        const regPassword2 = document.getElementById('regPassword2');
+        const regNameError = document.getElementById('regNameError');
+        const regPassError = document.getElementById('regPassError');
+        const regPass2Error = document.getElementById('regPass2Error');
+
+        const packagesContainer = document.getElementById('packagesContainer');
         const cartSection = document.getElementById('cartSection');
         const cartItemsEl = document.getElementById('cartItems');
         const cartTotalEl = document.getElementById('cartTotal');
         const agreeCheckbox = document.getElementById('agreeCheckbox');
         const orderBtn = document.getElementById('orderBtn');
 
+        // ============ Рендер профиля ============
+        function renderAuthArea() {
+            const user = getCurrentUser();
+            authArea.innerHTML = `
+                <button class="btn-outline" id="authProfileBtn">${user ? user.name : 'Войти'}</button>
+                <button class="btn-primary" id="rechargeBtn">Пополнить сейчас</button>
+            `;
+            document.getElementById('rechargeBtn').addEventListener('click', () => {
+                if (!getCurrentUser()) {
+                    openAuthModal();
+                } else {
+                    // прокрутить к корзине или показать сообщение
+                    document.getElementById('cartSection').scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+            document.getElementById('authProfileBtn').addEventListener('click', () => {
+                if (getCurrentUser()) {
+                    // мини-меню или выход
+                    if (confirm(`Вы вошли как ${getCurrentUser().name}. Выйти?`)) {
+                        clearCurrentUser();
+                        renderAuthArea();
+                    }
+                } else {
+                    openAuthModal();
+                }
+            });
+        }
+
+        function openAuthModal() {
+            authModal.classList.add('active');
+            loginForm.reset();
+            registerForm.reset();
+            hideAuthErrors();
+            switchTab('login');
+        }
+        function closeAuthModal() { authModal.classList.remove('active'); }
+        function hideAuthErrors() {
+            loginError.style.display = 'none';
+            regNameError.style.display = 'none';
+            regPassError.style.display = 'none';
+            regPass2Error.style.display = 'none';
+        }
+        function switchTab(tabName) {
+            tabs.forEach(t => t.classList.remove('active'));
+            if (tabName === 'login') {
+                document.querySelector('[data-tab="login"]').classList.add('active');
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+            } else {
+                document.querySelector('[data-tab="register"]').classList.add('active');
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+            }
+            hideAuthErrors();
+        }
+
+        function isValidUsername(name) { return /^[a-zA-Z0-9]+$/.test(name); }
+
+        // Вход
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            hideAuthErrors();
+            const name = loginName.value.trim();
+            const pass = loginPassword.value;
+            if (!isValidUsername(name)) {
+                loginError.textContent = 'Имя только латинские буквы и цифры';
+                loginError.style.display = 'block';
+                return;
+            }
+            const users = getUsers();
+            const user = users.find(u => u.name.toLowerCase() === name.toLowerCase() && u.password === pass);
+            if (!user) {
+                loginError.textContent = 'Неверное имя или пароль';
+                loginError.style.display = 'block';
+                return;
+            }
+            setCurrentUser({ name: user.name, id: user.id });
+            closeAuthModal();
+            renderAuthArea();
+        });
+
+        // Регистрация
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            hideAuthErrors();
+            const name = regName.value.trim();
+            const pass = regPassword.value;
+            const pass2 = regPassword2.value;
+            if (!isValidUsername(name)) {
+                regNameError.textContent = 'Имя только латинские буквы и цифры';
+                regNameError.style.display = 'block';
+                return;
+            }
+            if (pass.length < 6) {
+                regPassError.textContent = 'Пароль от 6 символов';
+                regPassError.style.display = 'block';
+                return;
+            }
+            if (pass !== pass2) {
+                regPass2Error.textContent = 'Пароли не совпадают';
+                regPass2Error.style.display = 'block';
+                return;
+            }
+            const users = getUsers();
+            if (users.some(u => u.name.toLowerCase() === name.toLowerCase())) {
+                regNameError.textContent = 'Пользователь уже существует';
+                regNameError.style.display = 'block';
+                return;
+            }
+            const newUser = { name, password: pass, id: 'U' + Math.random().toString(16).slice(2, 10).toUpperCase() };
+            users.push(newUser);
+            saveUsers(users);
+            setCurrentUser({ name: newUser.name, id: newUser.id });
+            closeAuthModal();
+            renderAuthArea();
+        });
+
+        tabs.forEach(tab => tab.addEventListener('click', () => switchTab(tab.dataset.tab)));
+        closeAuthModalBtn.addEventListener('click', closeAuthModal);
+        window.addEventListener('click', (e) => { if (e.target === authModal) closeAuthModal(); });
+
+        // ============ Рендер каталога ============
+        packages.forEach(pkg => {
+            const card = document.createElement('div');
+            card.className = 'package-card' + (pkg.popular ? ' popular' : '');
+            card.innerHTML = `
+                ${pkg.popular ? '<span class="popular-badge">Хит</span>' : ''}
+                <div class="package-amount">${pkg.amount.toLocaleString()} FC POINTS</div>
+                <div class="package-bonus">При активном x2-бонусе вы получите в 2 раза больше монет.</div>
+                <div class="package-prices">
+                    <span class="our-price">${pkg.priceOurs} ₽</span>
+                    <span class="game-price">${pkg.priceGame} ₽ в игре</span>
+                </div>
+                <button class="add-to-cart" data-amount="${pkg.amount}" data-price="${pkg.priceOurs}">В корзину</button>
+            `;
+            packagesContainer.appendChild(card);
+        });
+
+        // ============ Логика корзины ============
+        let cart = getCart();
+        updateCartUI();
+
         document.addEventListener('click', (e) => {
             if (e.target.classList.contains('add-to-cart')) {
+                if (!getCurrentUser()) {
+                    openAuthModal();
+                    return;
+                }
                 const btn = e.target;
-                const amount = btn.getAttribute('data-amount');
-                const price = parseInt(btn.getAttribute('data-price'));
+                const amount = parseInt(btn.dataset.amount);
+                const price = parseInt(btn.dataset.price);
                 cart.push({ amount, price });
-                updateCart();
+                saveCart(cart);
+                updateCartUI();
             }
         });
 
-        function updateCart() {
+        function updateCartUI() {
             if (cart.length === 0) {
                 cartSection.style.display = 'none';
                 return;
@@ -323,26 +526,54 @@
             cart.forEach((item, idx) => {
                 total += item.price;
                 const li = document.createElement('li');
-                li.innerHTML = `${item.amount} FC Points <span>${item.price} ₽ <button class="remove-item" data-index="${idx}" style="background:none;border:none;color:#FF4D6A;cursor:pointer;">✕</button></span>`;
+                li.innerHTML = `${item.amount.toLocaleString()} FC Points <span>${item.price} ₽ <button class="remove-item" data-index="${idx}" style="background:none;border:none;color:#FF4D6A;cursor:pointer;">✕</button></span>`;
                 cartItemsEl.appendChild(li);
             });
             cartTotalEl.textContent = total + ' ₽';
-            orderBtn.disabled = !agreeCheckbox.checked;
+            orderBtn.disabled = !agreeCheckbox.checked || !getCurrentUser();
         }
 
         agreeCheckbox.addEventListener('change', () => {
-            orderBtn.disabled = !agreeCheckbox.checked;
+            orderBtn.disabled = !agreeCheckbox.checked || !getCurrentUser();
+        });
+
+        // Удаление товара из корзины
+        cartItemsEl.addEventListener('click', (e) => {
+            if (e.target.classList.contains('remove-item')) {
+                const idx = parseInt(e.target.dataset.index);
+                cart.splice(idx, 1);
+                saveCart(cart);
+                updateCartUI();
+            }
         });
 
         orderBtn.addEventListener('click', () => {
-            alert('Заказ оформлен (демо). После оплаты мы начнём пополнение.');
+            if (!getCurrentUser()) {
+                openAuthModal();
+                return;
+            }
+            alert('Заказ оформлен (демо). После оплаты начнётся пополнение.');
             cart = [];
-            updateCart();
+            saveCart(cart);
+            updateCartUI();
         });
 
-        // Auth (сокращённая версия, рабочая)
-        // ... (вставь полноценный скрипт авторизации как в AI-Hub)
-        // Рендер authArea при загрузке
+        // При клике на "Пополнить сейчас" в hero
+        document.getElementById('heroRechargeBtn').addEventListener('click', () => {
+            if (!getCurrentUser()) {
+                openAuthModal();
+            } else {
+                document.getElementById('prices').scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+
+        // Инициализация
+        renderAuthArea();
+
+        // Sticky header effect
+        window.addEventListener('scroll', () => {
+            document.querySelector('header').classList.toggle('scrolled', window.scrollY > 50);
+        });
     </script>
 </body>
 </html>
