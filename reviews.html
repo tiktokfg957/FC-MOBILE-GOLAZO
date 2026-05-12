@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отзывы</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* общие стили + отзывы */
+        .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin: 60px 0; }
+        .review-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(0,255,133,0.2); border-radius: 20px; padding: 28px; }
+        .review-card .stars { color: #00FF85; margin-bottom: 12px; }
+        .review-card p { color: #AAAAAA; }
+    </style>
+</head>
+<body>
+    <!-- header -->
+    <main class="container">
+        <h2 class="section-title">Отзывы <span class="green">клиентов</span></h2>
+        <div class="reviews-grid">
+            <div class="review-card">
+                <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p>"Быстро, дёшево, рекомендую!" — @user1</p>
+            </div>
+            <div class="review-card">
+                <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
+                <p>"Пополнили за 15 минут, спасибо!" — @user2</p>
+            </div>
+        </div>
+    </main>
+    <footer><!-- --></footer>
+    <script>
+        // header auth render
+    </script>
+</body>
+</html>
