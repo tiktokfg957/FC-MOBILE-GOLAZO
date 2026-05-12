@@ -3,11 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Контакты</title>
+    <title>FC MOBILE GOLAZO — Контакты</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* общие стили + контакты */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #0A0A0A; color: #FFFFFF; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+        header {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(10,10,10,0.85); backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,255,133,0.15);
+            padding: 18px 0; transition: 0.3s;
+        }
+        header.scrolled { box-shadow: 0 0 20px rgba(0,255,133,0.3); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .logo { display: flex; align-items: center; gap: 12px; }
+        .logo-icon { font-size: 2.2rem; color: #00FF85; filter: drop-shadow(0 0 8px #00FF85); }
+        .logo-text { font-size: 1.8rem; font-weight: 800; color: #FFFFFF; letter-spacing: -0.5px; }
+        .logo-text span { color: #00FF85; }
+        nav { display: flex; gap: 28px; }
+        nav a { color: #AAAAAA; text-decoration: none; font-weight: 500; transition: 0.2s; }
+        nav a:hover, nav a.active { color: #00FF85; text-shadow: 0 0 6px #00FF85; }
+        .header-btns { display: flex; align-items: center; gap: 12px; }
+        .btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 10px 22px; border-radius: 40px; color: white; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .btn-outline:hover { border-color: #00FF85; color: #00FF85; box-shadow: 0 0 10px rgba(0,255,133,0.3); }
+        .btn-primary { background: #00FF85; border: none; padding: 10px 24px; border-radius: 40px; color: #0A0A0A; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .btn-primary:hover { background: #00cc6a; transform: scale(0.98); }
+
+        .section-title { font-size: 2.5rem; font-weight: 800; text-align: center; margin-bottom: 60px; color: #FFFFFF; }
+        .section-title .green { color: #00FF85; }
+
         .telegram-link {
             display: inline-flex; align-items: center; gap: 8px;
             background: rgba(0,255,133,0.1); border: 1px solid #00FF85;
@@ -15,10 +41,34 @@
             font-weight: 600; text-decoration: none; font-size: 1.2rem;
         }
         .telegram-link:hover { background: rgba(0,255,133,0.2); }
+
+        footer { padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; color: #888; margin-top: 80px; }
+        footer .social-links a { color: #aaa; margin: 0 10px; font-size: 1.2rem; }
+        footer .social-links a:hover { color: #00FF85; }
     </style>
 </head>
 <body>
-    <!-- header -->
+    <header id="header">
+        <div class="container header-inner">
+            <div class="logo">
+                <div class="logo-icon"><i class="fas fa-futbol"></i></div>
+                <div class="logo-text">GOLAZO<span>FC</span></div>
+            </div>
+            <nav>
+                <a href="index.html">Главная</a>
+                <a href="prices.html">Цены</a>
+                <a href="how.html">Как работает</a>
+                <a href="reviews.html">Отзывы</a>
+                <a href="faq.html">FAQ</a>
+                <a href="contacts.html" class="active">Контакты</a>
+            </nav>
+            <div class="header-btns" id="authArea">
+                <button class="btn-outline" id="authProfileBtn">Войти</button>
+                <a href="prices.html" class="btn-primary">Пополнить сейчас</a>
+            </div>
+        </div>
+    </header>
+
     <main class="container" style="text-align: center; padding: 80px 0;">
         <h2 class="section-title">Наши <span class="green">контакты</span></h2>
         <p style="color: #AAAAAA; margin-bottom: 24px;">Свяжитесь с нами в Telegram</p>
@@ -26,6 +76,40 @@
             <i class="fab fa-telegram"></i> @FCMOBILEGOLAZO
         </a>
     </main>
-    <footer><!-- --></footer>
+
+    <footer>
+        <p>© 2025 FC MOBILE GOLAZO. Все права защищены.</p>
+        <div class="social-links">
+            <a href="https://t.me/FCMOBILEGOLAZO" target="_blank"><i class="fab fa-telegram"></i></a>
+        </div>
+    </footer>
+
+    <script>
+        const CURRENT_USER_KEY = 'golazo_currentUser';
+        function getCurrentUser() { return JSON.parse(localStorage.getItem(CURRENT_USER_KEY)); }
+
+        function renderAuthArea() {
+            const user = getCurrentUser();
+            const authArea = document.getElementById('authArea');
+            authArea.innerHTML = `
+                <button class="btn-outline" id="authProfileBtn">${user ? user.name : 'Войти'}</button>
+                <a href="prices.html" class="btn-primary">Пополнить сейчас</a>
+            `;
+            document.getElementById('authProfileBtn').addEventListener('click', () => {
+                if (user) {
+                    if (confirm(`Вы вошли как ${user.name}. Выйти?`)) {
+                        localStorage.removeItem(CURRENT_USER_KEY);
+                        location.reload();
+                    }
+                } else {
+                    alert('Для входа перейдите на страницу Цены.');
+                }
+            });
+        }
+        window.addEventListener('scroll', () => {
+            document.querySelector('header').classList.toggle('scrolled', window.scrollY > 50);
+        });
+        renderAuthArea();
+    </script>
 </body>
 </html>
