@@ -8,12 +8,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: #0A0A0A; color: #FFFFFF; overflow-x: hidden; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0A0A0A;
+            color: #FFFFFF;
+            overflow-x: hidden;
+        }
         .container { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
-        header { position: sticky; top: 0; z-index: 100; background: rgba(10,10,10,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,255,133,0.15); padding: 18px 0; transition: 0.3s; }
+        header {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(10,10,10,0.85); backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,255,133,0.15);
+            padding: 18px 0; transition: 0.3s;
+        }
         header.scrolled { box-shadow: 0 0 20px rgba(0,255,133,0.3); }
         .header-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
-        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo { display: flex; align-items: center; gap: 12px; }
         .logo-icon { font-size: 2.2rem; color: #00FF85; filter: drop-shadow(0 0 8px #00FF85); }
         .logo-text { font-size: 1.8rem; font-weight: 800; color: #FFFFFF; letter-spacing: -0.5px; }
         .logo-text span { color: #00FF85; }
@@ -22,12 +32,10 @@
         nav a:hover, nav a.active { color: #00FF85; text-shadow: 0 0 6px #00FF85; }
         .header-btns { display: flex; align-items: center; gap: 12px; }
         .btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.3); padding: 10px 22px; border-radius: 40px; color: white; cursor: pointer; font-weight: 600; transition: 0.2s; }
-        .btn-outline:hover { border-color: #00FF85; color: #00FF85; }
-        .btn-primary { background: #00FF85; border: none; padding: 10px 24px; border-radius: 40px; color: #0A0A0A; font-weight: 700; cursor: pointer; transition: 0.2s; }
-        .btn-primary:hover { background: #00cc6a; }
-        .cart-btn { position: relative; background: transparent; border: 1px solid #00FF85; color: #00FF85; padding: 10px 16px; border-radius: 40px; cursor: pointer; font-size: 1.2rem; transition: 0.2s; }
-        .cart-btn:hover { background: rgba(0,255,133,0.1); }
-        .cart-count { position: absolute; top: -8px; right: -8px; background: #FF4D6A; color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+        .btn-outline:hover { border-color: #00FF85; color: #00FF85; box-shadow: 0 0 10px rgba(0,255,133,0.3); }
+        .btn-primary { background: #00FF85; border: none; padding: 10px 24px; border-radius: 40px; color: #0A0A0A; font-weight: 700; cursor: pointer; transition: 0.2s; text-decoration: none; }
+        .btn-primary:hover { background: #00cc6a; transform: scale(0.98); }
+
         .hero { display: flex; align-items: center; justify-content: space-between; gap: 40px; padding: 80px 0 100px; flex-wrap: wrap; }
         .hero-text { flex: 1; min-width: 300px; }
         .hero-text h1 { font-size: 3.5rem; font-weight: 800; line-height: 1.2; margin-bottom: 20px; }
@@ -35,24 +43,27 @@
         .hero-text p { font-size: 1.2rem; color: #AAAAAA; margin-bottom: 30px; }
         .hero-img { flex: 1; min-width: 300px; text-align: center; }
         .hero-img img { max-width: 100%; border-radius: 20px; box-shadow: 0 0 30px rgba(0,255,133,0.3); }
+
         .advantages { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; margin: 80px 0; }
         .adv-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(0,255,133,0.2); border-radius: 20px; padding: 28px 20px; text-align: center; backdrop-filter: blur(6px); transition: transform 0.3s, box-shadow 0.3s; }
         .adv-card:hover { transform: translateY(-6px); box-shadow: 0 10px 30px rgba(0,255,133,0.2); }
         .adv-card i { font-size: 2.5rem; color: #00FF85; margin-bottom: 16px; }
         .adv-card h3 { font-weight: 600; margin-bottom: 10px; }
+
         footer { padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; color: #888; margin-top: 80px; }
         footer .social-links a { color: #aaa; margin: 0 10px; font-size: 1.2rem; }
         footer .social-links a:hover { color: #00FF85; }
+
         @media (max-width: 768px) { .hero-text h1 { font-size: 2.2rem; } }
     </style>
 </head>
 <body>
     <header id="header">
         <div class="container header-inner">
-            <a href="index.html" class="logo">
+            <div class="logo">
                 <div class="logo-icon"><i class="fas fa-futbol"></i></div>
                 <div class="logo-text">GOLAZO<span>FC</span></div>
-            </a>
+            </div>
             <nav>
                 <a href="index.html" class="active">Главная</a>
                 <a href="prices.html">Цены</a>
@@ -62,8 +73,8 @@
                 <a href="contacts.html">Контакты</a>
             </nav>
             <div class="header-btns" id="authArea">
-                <button class="btn-outline" id="authBtn">Войти</button>
-                <button class="cart-btn" id="cartIconBtn"><i class="fas fa-shopping-cart"></i><span class="cart-count" id="cartCount">0</span></button>
+                <button class="btn-outline" id="authProfileBtn">Войти</button>
+                <a href="prices.html" class="btn-primary">Пополнить сейчас</a>
             </div>
         </div>
     </header>
@@ -73,7 +84,7 @@
             <div class="hero-text">
                 <h1>Пополнение <span class="green">FC Points</span><br>быстро, безопасно, выгодно</h1>
                 <p>Официальные ключи, моментальная доставка, кешбек до 5%</p>
-                <a href="prices.html" class="btn-primary" style="text-decoration: none; display: inline-block; font-size: 1.2rem; padding: 12px 32px;">Пополнить сейчас</a>
+                <a href="prices.html" class="btn-primary" style="font-size: 1.2rem;">Пополнить сейчас</a>
             </div>
             <div class="hero-img">
                 <img src="https://via.placeholder.com/500x300/0A0A0A/00FF85?text=FC+Mobile+Points" alt="FC Points">
@@ -81,10 +92,10 @@
         </section>
 
         <section class="advantages">
-            <div class="adv-card"><i class="fas fa-shield-alt"></i><h3>Полностью безопасно 🛡️</h3><p>Официальные каналы пополнения</p></div>
-            <div class="adv-card"><i class="fas fa-clock"></i><h3>Среднее время доставки: 10–25 мин 🕑</h3></div>
-            <div class="adv-card"><i class="fas fa-coins"></i><h3>Кэшбек 💰</h3><p>До 5% от суммы заказа</p></div>
-            <div class="adv-card"><i class="fas fa-tags"></i><h3>Выгодно 💸</h3><p>Цены ниже, чем в игре</p></div>
+            <div class="adv-card"><i class="fas fa-shield-alt"></i><h3>Полностью безопасно 🛡️</h3></div>
+            <div class="adv-card"><i class="fas fa-clock"></i><h3>Среднее время: 10–25 мин 🕑</h3></div>
+            <div class="adv-card"><i class="fas fa-coins"></i><h3>Кэшбек 💰</h3></div>
+            <div class="adv-card"><i class="fas fa-tags"></i><h3>Выгодно 💸</h3></div>
         </section>
     </main>
 
@@ -92,62 +103,41 @@
         <p>© 2025 FC MOBILE GOLAZO. Все права защищены.</p>
         <div class="social-links">
             <a href="https://t.me/FCMOBILEGOLAZO" target="_blank"><i class="fab fa-telegram"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
         </div>
     </footer>
 
-    <!-- Модалка корзины -->
-    <div class="modal" id="cartModal">
-        <div class="modal-content">
-            <button class="modal-close" id="closeCartModal">&times;</button>
-            <h3 style="margin-bottom: 16px;">Корзина</h3>
-            <ul id="cartItemsList" style="list-style: none; margin-bottom: 16px;"></ul>
-            <div style="font-weight: 700; margin-bottom: 16px;">Итого: <span id="cartTotalPrice">0</span> ₽</div>
-            <button class="submit-btn" id="checkoutFromModal">Оформить заказ</button>
-        </div>
-    </div>
+    <script>
+        const USERS_KEY = 'golazo_users';
+        const CURRENT_USER_KEY = 'golazo_currentUser';
 
-    <!-- Модалка авторизации -->
-    <div class="modal" id="authModal">
-        <div class="modal-content">
-            <button class="modal-close" id="closeAuthModal">&times;</button>
-            <div class="modal-tabs">
-                <div class="modal-tab active" data-tab="login">Вход</div>
-                <div class="modal-tab" data-tab="register">Регистрация</div>
-            </div>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label>Имя пользователя (латиница)</label>
-                    <input type="text" id="loginName" placeholder="username" required>
-                    <div class="error-msg" id="loginError"></div>
-                </div>
-                <div class="form-group">
-                    <label>Пароль</label>
-                    <input type="password" id="loginPassword" placeholder="Пароль" required>
-                </div>
-                <button type="submit" class="submit-btn">Войти</button>
-            </form>
-            <form id="registerForm" style="display: none;">
-                <div class="form-group">
-                    <label>Имя пользователя (латиница)</label>
-                    <input type="text" id="regName" placeholder="username" required>
-                    <div class="error-msg" id="regNameError"></div>
-                </div>
-                <div class="form-group">
-                    <label>Пароль (минимум 6 символов)</label>
-                    <input type="password" id="regPassword" placeholder="Пароль" required>
-                    <div class="error-msg" id="regPassError"></div>
-                </div>
-                <div class="form-group">
-                    <label>Повторите пароль</label>
-                    <input type="password" id="regPassword2" placeholder="Пароль ещё раз" required>
-                    <div class="error-msg" id="regPass2Error"></div>
-                </div>
-                <button type="submit" class="submit-btn">Зарегистрироваться</button>
-            </form>
-        </div>
-    </div>
+        function getCurrentUser() {
+            return JSON.parse(localStorage.getItem(CURRENT_USER_KEY));
+        }
 
-    <script src="common.js"></script>
+        function renderAuthArea() {
+            const user = getCurrentUser();
+            const authArea = document.getElementById('authArea');
+            authArea.innerHTML = `
+                <button class="btn-outline" id="authProfileBtn">${user ? user.name : 'Войти'}</button>
+                <a href="prices.html" class="btn-primary">Пополнить сейчас</a>
+            `;
+            document.getElementById('authProfileBtn').addEventListener('click', () => {
+                if (user) {
+                    if (confirm(`Вы вошли как ${user.name}. Выйти?`)) {
+                        localStorage.removeItem(CURRENT_USER_KEY);
+                        location.reload();
+                    }
+                } else {
+                    alert('Для входа перейдите на страницу Цены и нажмите "Войти".');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', () => {
+            document.querySelector('header').classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        renderAuthArea();
+    </script>
 </body>
 </html>
